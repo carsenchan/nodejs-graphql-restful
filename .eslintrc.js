@@ -1,12 +1,11 @@
 module.exports = {
   env: {
-    browser: true,
     commonjs: true,
     es6: true,
     jest: true,
   },
   extends: [
-    // "airbnb-base",
+    "airbnb-base",
     "plugin:prettier/recommended",
     "plugin:jest/recommended",
     "plugin:security/recommended",
@@ -20,7 +19,7 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
-    // "no-console": "error",
+    "no-console": "error",
     "func-names": "off",
     "no-underscore-dangle": "off",
     "consistent-return": "off",
