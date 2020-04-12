@@ -1,5 +1,8 @@
 const express = require("express");
 const helmet = require("helmet");
+const morgan = require("morgan");
+const path = require("path");
+const rfs = require("rotating-file-stream");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const compression = require("compression");
@@ -7,13 +10,29 @@ const cors = require("cors");
 const passport = require("passport");
 const httpStatus = require("http-status");
 
-const morgan = require("./config/morgan");
+const AppError = require("./utilis/appError");
+const routes = require("./routes/v1");
+const { errorConverter, errorHandler } = require("./middlewares/error");
+
+// const morganLogger = require("./config/morgan");
 const passportConfig = require("./config/passport");
 
 const app = express();
 
-app.use(morgan.successLogger);
-app.use(morgan.errorLogger);
+// morgan logger
+// create a rotating write stream
+const accessLogStream = rfs.createStream("access.log", {
+  interval: "1d", // rotate daily
+  path: path.join(__dirname, "../logs"),
+});
+app.use(
+  morgan(
+    ":method :url :status [:date[clf]] :res[content-length] - :response-time ms",
+    {
+      stream: accessLogStream,
+    }
+  )
+);
 
 // set security HTTP headers
 app.use(helmet());
@@ -39,9 +58,18 @@ app.options("*", cors());
 app.use(passport.initialize());
 passport.use("jwt", passportConfig.jwtStrategy);
 
+// v1 api routes
+app.use("/v1", routes);
+
 // send back a 404 error for any unknown api request
-app.use((req, res, next) => {
+app.use(function (req, res, next) {
   next(new AppError(httpStatus.NOT_FOUND, "Not found"));
 });
+
+// convert error to AppError, if needed
+app.use(errorConverter);
+
+// handle error
+app.use(errorHandler);
 
 module.exports = app;
