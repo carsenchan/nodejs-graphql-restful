@@ -18,6 +18,10 @@ const envVarsSchema = Joi.object()
     JWT_REFRESH_EXPIRATION_DAYS: Joi.number()
       .default(30)
       .description("days after which refresh tokens expire"),
+    UNSPLASH_ACCESS_KEY: Joi.string().required(),
+    PIXABAY_KEY: Joi.string().required(),
+    STORYBLOCKS_PUBLIC_KEY: Joi.string().required(),
+    STORYBLOCKS_PRIVATE_KEY: Joi.string().required(),
   })
   .unknown();
 
@@ -45,5 +49,13 @@ module.exports = {
     accessExpirationMinutes: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
     refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
     resetPasswordExpirationMinutes: 10,
+  },
+  thirdPartiesKeys: {
+    unsplash: envVars.UNSPLASH_ACCESS_KEY,
+    pixabay: envVars.PIXABAY_KEY,
+    storyBlocks: {
+      publicKey: envVars.STORYBLOCKS_PUBLIC_KEY,
+      privateKey: envVars.STORYBLOCKS_PRIVATE_KEY,
+    },
   },
 };
