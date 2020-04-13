@@ -16,3 +16,6 @@ coverage
 
 # environment file
 .env
+
+# docker-compose file
+docker-compose.yml
