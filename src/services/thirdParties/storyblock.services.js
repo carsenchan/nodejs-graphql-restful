@@ -5,6 +5,7 @@ const config = require("../../config/config");
 
 const STORYBLOCK_BASE_URL = "https://api.graphicstock.com";
 const SEARCH_URL = "/api/v1/stock-items/search/";
+const IMAGE_SOURCE = "StoryBlocks";
 
 const expires = () => Math.floor(Date.now() / 1000);
 
@@ -34,11 +35,21 @@ const searchImage = (keyword) => {
       },
     })
       .then((res) => {
-        console.log(res.data);
-        console.log(res.status);
-        console.log(res.statusText);
-        console.log(res.headers);
-        resolve(res.data);
+        const responseBody = res.data;
+        if (responseBody.info && responseBody.info.length > 0) {
+          const imageList = responseBody.info;
+          const returnImages = imageList.map((current) => ({
+            image_ID: current.id,
+            thumbnails: current.thumbnail_url,
+            preview: current.preview_url,
+            title: current.title,
+            tags: current.keywords,
+            source: IMAGE_SOURCE,
+          }));
+          resolve(returnImages);
+        } else {
+          resolve([]);
+        }
       })
       .catch((error) => reject(error));
   });
@@ -59,11 +70,21 @@ const getImage = (imageID) => {
       },
     })
       .then((res) => {
-        console.log(res.data);
-        console.log(res.status);
-        console.log(res.statusText);
-        console.log(res.headers);
-        resolve(res.data);
+        const responseBody = res.data;
+        if (responseBody.info && responseBody.info.length > 0) {
+          const imageList = responseBody.info;
+          const returnImages = imageList.map((current) => ({
+            image_ID: current.id,
+            thumbnails: current.thumbnail_url,
+            preview: current.preview_url,
+            title: current.title,
+            source: IMAGE_SOURCE,
+          }));
+          console.log(returnImages);
+          resolve(returnImages);
+        } else {
+          resolve([]);
+        }
       })
       .catch((error) => reject(error));
   });
