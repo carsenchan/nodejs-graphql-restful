@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const mongoose = require("mongoose");
 const chalk = require("chalk");
 const app = require("./app");
@@ -31,7 +32,7 @@ process.on("uncaughtException", unexpectedErrorHandler);
 process.on("unhandledRejection", unexpectedErrorHandler);
 
 process.on("SIGTERM", () => {
-  logger.info("SIGTERM received");
+  console.info("SIGTERM received");
   if (server) {
     server.close();
   }
