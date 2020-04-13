@@ -1,19 +1,53 @@
-const Unsplash = require("unsplash-js").default;
-const { toJson } = require("unsplash-js");
+/* eslint-disable no-console */
+const axios = require("axios").default;
 const config = require("../../config/config");
 
-const unsplash = new Unsplash({
-  accessKey: config.thirdPartiesKeys.unsplash,
-  // Optionally you can also configure a custom header to be sent with every request
-  headers: {
-    "X-Custom-Header": "foo",
-  },
-  // Optionally if using a node-fetch polyfill or a version of fetch which supports the timeout option, you can configure the request timeout for all requests
-  timeout: 500, // values set in ms
-});
+const UNSPLASH_DOMAIN = "https://api.unsplash.com";
 
-const searchImage = (keyword, page, perPage) => {
-  return unsplash.search.photos(keyword, page, perPage).then(toJson);
+const searchImage = (keyword) => {
+  const returnPromise = new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      baseURL: UNSPLASH_DOMAIN,
+      url: "/search/photos",
+      headers: {
+        Authorization: `Client-ID ${config.thirdPartiesKeys.unsplash}`,
+      },
+      params: {
+        query: keyword,
+        per_page: 20,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        console.log(res.status);
+        console.log(res.statusText);
+        console.log(res.headers);
+        resolve(res.data);
+      })
+      .catch((error) => reject(error));
+  });
+  return returnPromise;
 };
 
-module.exports.search = searchImage;
+const getImage = (imageID) => {
+  const returnPromise = new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      baseURL: UNSPLASH_DOMAIN,
+      url: `/photos/${imageID}`,
+      headers: { Authorization: config.thirdPartiesKeys.unsplash },
+    })
+      .then((res) => {
+        console.log(res.data);
+        console.log(res.status);
+        console.log(res.statusText);
+        console.log(res.headers);
+        resolve(res.data);
+      })
+      .catch((error) => reject(error));
+  });
+  return returnPromise;
+};
+
+module.exports = { searchImage, getImage };
