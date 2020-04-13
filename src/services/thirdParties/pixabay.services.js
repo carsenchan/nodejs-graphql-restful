@@ -25,7 +25,7 @@ const searchImage = (keyword) => {
             thumbnails: current.webformatURL,
             preview: current.previewURL,
             title: current.title || "",
-            tags: current.tags,
+            tags: current.tags.split(",").map((tag) => tag.trim()),
             source: IMAGE_SOURCE,
           }));
           resolve(imageList);
@@ -50,10 +50,6 @@ const getImage = (imageID) => {
       },
     })
       .then((res) => {
-        console.log(res.data);
-        console.log(res.status);
-        console.log(res.statusText);
-        console.log(res.headers);
         resolve(res.data);
       })
       .catch((error) => reject(error));

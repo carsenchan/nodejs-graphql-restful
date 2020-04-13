@@ -10,14 +10,12 @@ const cors = require("cors");
 const http = require("http");
 const passport = require("passport");
 const httpStatus = require("http-status");
-const { ApolloServer } = require("apollo-server-express");
-const schema = require("./graphql");
 
 const AppError = require("./utilis/appError");
 const routes = require("./routes/v1");
 const { errorConverter, errorHandler } = require("./middlewares/error");
 
-// const morganLogger = require("./config/morgan");
+const graphqlSetup = require("./config/graphql");
 const passportConfig = require("./config/passport");
 
 const app = express();
@@ -66,31 +64,7 @@ passport.use("jwt", passportConfig.jwtStrategy);
 app.use("/v1", routes);
 
 // express graphql
-const graphQLServer = new ApolloServer({
-  schema,
-});
-
-graphQLServer.applyMiddleware({
-  app,
-  cors: {
-    origin: true,
-    credentials: true,
-    methods: ["POST"],
-    allowedHeaders: [
-      "X-Requested-With",
-      "X-HTTP-Method-Override",
-      "Content-Type",
-      "Accept",
-      "Authorization",
-      "Access-Control-Allow-Origin",
-    ],
-  },
-  playground: {
-    settings: {
-      "editor.theme": "light",
-    },
-  },
-});
+graphqlSetup(app);
 
 // send back a 404 error for any unknown api request
 app.use(function (req, res, next) {

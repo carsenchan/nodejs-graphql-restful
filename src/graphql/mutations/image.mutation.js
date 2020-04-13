@@ -13,14 +13,17 @@ const searchImages = {
       type: GraphQLString,
     },
   },
-  resolve: async (value, { keyword }) => {
+  resolve: (value, { keyword }) => {
     const pixaBayPromise = ImageServices.pixabayServices.searchImage(keyword);
     const storyBlocksPromise = ImageServices.storyBlocksServices.searchImage(
       keyword
     );
     const unsplashPromise = ImageServices.unsplashServices.searchImage(keyword);
     const searchesTasks = [pixaBayPromise, storyBlocksPromise, unsplashPromise];
-    Promise.all(searchesTasks);
+    const results = Promise.all(searchesTasks).then((responses) => {
+      return [...responses[0], ...responses[1], ...responses[2]];
+    });
+    return results;
   },
 };
 

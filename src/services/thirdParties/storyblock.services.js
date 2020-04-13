@@ -43,7 +43,7 @@ const searchImage = (keyword) => {
             thumbnails: current.thumbnail_url,
             preview: current.preview_url,
             title: current.title,
-            tags: current.keywords,
+            tags: current.keywords.split(","),
             source: IMAGE_SOURCE,
           }));
           resolve(returnImages);
@@ -80,7 +80,6 @@ const getImage = (imageID) => {
             title: current.title,
             source: IMAGE_SOURCE,
           }));
-          console.log(returnImages);
           resolve(returnImages);
         } else {
           resolve([]);

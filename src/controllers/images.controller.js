@@ -1,13 +1,18 @@
 const httpStatus = require("http-status");
 const unsplashServices = require("../services/thirdParties/unsplash.services");
-// const pixabayServices = require("../services/thirdParties/pixabay.services");
-// const storyBlocksServices = require("../services/thirdParties/storyblock.services");
+const pixabayServices = require("../services/thirdParties/pixabay.services");
+const storyBlocksServices = require("../services/thirdParties/storyblock.services");
 const AppError = require("../utilis/appError");
 
 const searchImages = async (keyword) => {
   try {
-    // const results = await imageServices.searchImage(keyword);
-    const results = await unsplashServices.searchImage(keyword);
+    const promises = [
+      unsplashServices.searchImage(keyword),
+      pixabayServices.searchImage(keyword),
+      storyBlocksServices.searchImage(keyword),
+    ];
+    const responses = await Promise.all(promises);
+    const results = [...responses[0], ...responses[1], ...responses[2]];
 
     return results;
   } catch (error) {
