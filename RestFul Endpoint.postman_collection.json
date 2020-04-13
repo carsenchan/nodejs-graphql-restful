@@ -1,0 +1,89 @@
+{
+	"variables": [],
+	"info": {
+		"name": "RestFul Endpoint",
+		"_postman_id": "feae2da5-4189-39e9-5d53-c024db0b07ad",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"url": "http://localhost:4001/v1/users/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"test2@testemail.com\",\n\t\"password\": \"test123123\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RefreshToken",
+			"request": {
+				"url": "http://localhost:4001/v1/users/refreshToken",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZTkzNTQ1MTU4ZGQxOTMyNmRmNjU1NzgiLCJpYXQiOjE1ODY3Nzc0MTksImV4cCI6MTU4OTM2OTQxOX0.szHaaUD_Fj4Bwta_n39mYy33l5Z77DMGC8BH1Zo2JFs\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Image Search",
+			"request": {
+				"url": {
+					"raw": "http://localhost:4001/v1/images/search?keyword=hong kong",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4001",
+					"path": [
+						"v1",
+						"images",
+						"search"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "hong kong",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZTkzNTQ1MTU4ZGQxOTMyNmRmNjU1NzgiLCJpYXQiOjE1ODY3ODQzMDUsImV4cCI6MTU4Njc4NjEwNX0.nqtxcB4rRZes96hCUUoWht809dhMOTnNqoD6eepZdPo",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

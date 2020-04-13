@@ -55,3 +55,11 @@ yarn prettier
 # fix prettier errors
 yarn prettier:fix
 ```
+
+## Postman
+
+Use Postman collection to view RESTFul endpoints
+
+## GraphQL
+
+While running the application, open `${Application_Base_Url}/graphql` to view queries and mutations
